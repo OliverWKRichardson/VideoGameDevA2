@@ -24,7 +24,7 @@ public class Cuttable : MonoBehaviour
             // end the streak if the item is a fruit
             if(tag == "Fruit")
             {
-                player.GetComponent<Ninja_Player>().endStreak();
+                player.GetComponent<PlayerScore>().endStreak();
             }
         }
     }
