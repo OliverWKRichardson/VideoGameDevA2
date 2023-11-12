@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class gravity : MonoBehaviour
+public class CustomPhysics : MonoBehaviour
 {
     private Vector3 acceleration;
-    private Vector3 gravforce;
     private Vector3 velocity;
-    private float mass = 10.0f;
+    public int mass;
 
     public void applyForce(Vector3 force)
     {
@@ -17,20 +16,20 @@ public class gravity : MonoBehaviour
 
     private void updatePos()
     {
-        velocity = velocity + acceleration;
+        velocity += acceleration;
         transform.position += velocity * Time.deltaTime;
         acceleration = new Vector3(0.0f, 0.0f); //reset to zero
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void FixedUpdate()
     {
-        gravforce = new Vector3(0, -1, 0);
+        // gravity
+        applyForce(new Vector3(0, -1, 0));
     }
 
     void LateUpdate()
     {
-        applyForce(gravforce);
+        // update position of object
         updatePos();
     }
 }

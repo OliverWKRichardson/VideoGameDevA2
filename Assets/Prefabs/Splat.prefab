@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7176051196225788363}
   - component: {fileID: 8260491533598462478}
   m_Layer: 0
-  m_Name: Splat2D
+  m_Name: Splat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

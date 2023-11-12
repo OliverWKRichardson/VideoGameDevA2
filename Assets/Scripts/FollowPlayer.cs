@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AppleFollow : MonoBehaviour
+public class FollowPlayer : MonoBehaviour
 {
     private Vector3 facing;
     private Vector3 targetDirection;

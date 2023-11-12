@@ -5,11 +5,12 @@ using UnityEngine;
 public class Ninja_Player : MonoBehaviour
 {
     private Vector3 pos;
-    private int streak = 1;
-    public int score = 0;
+    private int streak = 0;
+    private int score = 0;
     // Start is called before the first frame update
     void Start()
     {
+        // mobile screen setup
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
@@ -17,6 +18,7 @@ public class Ninja_Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // movement
         if (Application.platform == RuntimePlatform.Android)
         {
             if (Input.touchCount == 1)
@@ -37,25 +39,26 @@ public class Ninja_Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        // score keeping
         if (other.tag == "Fruit")
         {
+            streak++;
             score += streak;
             Debug.Log("Score: " + score + " Streak: " + streak);
-            streak++;
-            other.gameObject.GetComponent<Fruit2D>().Hit("Fruit");
+            other.gameObject.GetComponent<Cuttable>().Hit();
         }
         if (other.tag == "Enemy")
         {
+            streak = 0;
             score -= 2;
             Debug.Log("Score: " + score + " Streak: " + streak);
-            streak = 1;
-            other.gameObject.GetComponent<Fruit2D>().Hit("Bomb");
+            other.gameObject.GetComponent<Cuttable>().Hit();
         }
     }
 
     public void endStreak()
     {
+        streak = 0;
         Debug.Log("Score: " + score + " Streak: " + streak);
-        streak = 1;
     }
 }

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Splat2D : MonoBehaviour
+public class SplatFade : MonoBehaviour
 {
     private Color color;
-    public float destroySpeed = 0.2f;
+    private float destroySpeed = 0.2f;
 
     // Start is called before the first frame update
     void Start()
