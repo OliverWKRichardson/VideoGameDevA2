@@ -7,6 +7,7 @@ public class CustomPhysics : MonoBehaviour
     private Vector3 acceleration;
     private Vector3 velocity;
     public int mass;
+    public float rate;
 
     public void applyForce(Vector3 force)
     {
@@ -17,7 +18,7 @@ public class CustomPhysics : MonoBehaviour
     private void updatePos()
     {
         velocity += acceleration;
-        transform.position += velocity * Time.deltaTime;
+        transform.position += velocity * Time.deltaTime * rate;
         acceleration = new Vector3(0.0f, 0.0f); //reset to zero
     }
 
