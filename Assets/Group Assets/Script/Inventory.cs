@@ -35,6 +35,7 @@ public class Inventory : MonoBehaviour
     {
         canvas = GetComponentInParent<Canvas>();
         rectTransform = GetComponent<RectTransform>();
+
         InitiateSize(gridSizeWidth, gridSizeHeight);
 
         // To be removed (FOR TESTING)
@@ -44,7 +45,7 @@ public class Inventory : MonoBehaviour
 
         //SpawnItem(inventoryItemPrefab1x3, 7, 1, 1);
 
-        //SpawnItem(inventoryItemPrefab2x3L, 5, 1, 1);
+        SpawnItem(inventoryItemPrefab2x3L, 5, 1, 1);
 
         SpawnItem(basicAmmoPrefab, 0, 0, 60);
         SpawnItem(basicAmmoPrefab, 1, 0, 67);

@@ -25,11 +25,15 @@ public class InventoryItem : MonoBehaviour
     [SerializeField] bool[] tileArray;
     public bool[,] tileSet;
 
+    // Amount of item
     public int itemCount;
+    // Max amount of item
     public int itemCountMax;
 
+    // Is this a stackable item
     public bool isStackable;
 
+    // Which item this is
     public enum ItemName
     {
         BasicAmmo,
@@ -74,8 +78,12 @@ public class InventoryItem : MonoBehaviour
         if (rotation == 360) rotation = 0;
         RectTransform rectTransform = GetComponent<RectTransform>();
         rectTransform.rotation = Quaternion.Euler(0, 0, -rotation);
-        RectTransform textRectTransform = GetComponent<RectTransform>();
-        textRectTransform.rotation = Quaternion.Euler(0, 0, rotation);
+        if (isStackable)
+        {
+            RectTransform textRectTransform = itemCountText.GetComponent<RectTransform>();
+            textRectTransform.rotation = Quaternion.Euler(0, 0, 0);
+            Debug.Log(textRectTransform.gameObject.name);
+        }
         int tempValue = sizeWidth;
         sizeWidth = sizeHeight;
         sizeHeight = tempValue;

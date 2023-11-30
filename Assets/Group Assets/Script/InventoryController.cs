@@ -30,8 +30,7 @@ public class InventoryController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (selectedItem == null) return;
-            selectedItem.Rotate();
+            Rotate();
         }
     }
 
@@ -61,6 +60,12 @@ public class InventoryController : MonoBehaviour
         {
             PlaceItem(tileClickPosition);
         }
+    }
+
+    private void Rotate()
+    {
+        if (selectedItem == null || selectedItem.sizeWidth == selectedItem.sizeHeight) return;
+        selectedItem.Rotate();
     }
 
     // Places item at coordinate
