@@ -26,6 +26,8 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] GameObject inventoryItemPrefab2x3L;
 
+    [SerializeField] GameObject basicAmmoPrefab;
+
     // 2D Array for storing inventory data
     InventoryItem[,] inventoryItemSlot;
 
@@ -36,25 +38,16 @@ public class Inventory : MonoBehaviour
         InitiateSize(gridSizeWidth, gridSizeHeight);
 
         // To be removed (FOR TESTING)
-        InventoryItem inventoryItem = Instantiate(inventoryItemPrefab1x1).GetComponent<InventoryItem>();
-        RectTransform instantRectTransform = inventoryItem.GetComponent<RectTransform>();
-        instantRectTransform.localScale = instantRectTransform.localScale * canvas.scaleFactor;
-        SpawnItem(inventoryItem, 1, 1);
+        //SpawnItem(inventoryItemPrefab1x1, 1, 1, 1);
 
-        inventoryItem = Instantiate(inventoryItemPrefab2x2).GetComponent<InventoryItem>();
-        instantRectTransform = inventoryItem.GetComponent<RectTransform>();
-        instantRectTransform.localScale = instantRectTransform.localScale * canvas.scaleFactor;
-        SpawnItem(inventoryItem, 3, 3);
+        //SpawnItem(inventoryItemPrefab2x2, 3, 3, 1);
 
-        inventoryItem = Instantiate(inventoryItemPrefab1x3).GetComponent<InventoryItem>();
-        instantRectTransform = inventoryItem.GetComponent<RectTransform>();
-        instantRectTransform.localScale = instantRectTransform.localScale * canvas.scaleFactor;
-        SpawnItem(inventoryItem, 7, 1);
+        //SpawnItem(inventoryItemPrefab1x3, 7, 1, 1);
 
-        inventoryItem = Instantiate(inventoryItemPrefab2x3L).GetComponent<InventoryItem>();
-        instantRectTransform = inventoryItem.GetComponent<RectTransform>();
-        instantRectTransform.localScale = instantRectTransform.localScale * canvas.scaleFactor;
-        SpawnItem(inventoryItem, 5, 1);
+        //SpawnItem(inventoryItemPrefab2x3L, 5, 1, 1);
+
+        SpawnItem(basicAmmoPrefab, 0, 0, 60);
+        SpawnItem(basicAmmoPrefab, 1, 0, 67);
     }
 
     // Change size of inventory based on grid size
@@ -80,8 +73,14 @@ public class Inventory : MonoBehaviour
     }
 
     // Manually spawn items at posx, posy
-    public bool SpawnItem(InventoryItem inventoryItem, int posx, int posy)
+    public bool SpawnItem(GameObject inventoryItemPrefab, int posx, int posy, int itemCount)
     {
+        InventoryItem inventoryItem = Instantiate(inventoryItemPrefab).GetComponent<InventoryItem>();
+        RectTransform instantRectTransform = inventoryItem.GetComponent<RectTransform>();
+        instantRectTransform.localScale = instantRectTransform.localScale * canvas.scaleFactor;
+
+        if (inventoryItem.isStackable) inventoryItem.setItemCount(itemCount);
+
         if (!BoundaryCheck(posx, posy, inventoryItem.sizeWidth, inventoryItem.sizeHeight))
         {
             return false;
@@ -93,7 +92,7 @@ public class Inventory : MonoBehaviour
     }
 
     // User places picked up item at posx, posy and checks for any overlaps
-    public bool PlaceItem(InventoryItem inventoryItem, int posx, int posy, ref InventoryItem overlapItem)
+    public bool PlaceItem(ref InventoryItem inventoryItem, int posx, int posy, ref InventoryItem overlapItem)
     {
         // Check that item is within the bounds of the inventory
         if (!BoundaryCheck(posx, posy, inventoryItem.sizeWidth, inventoryItem.sizeHeight))
@@ -102,7 +101,7 @@ public class Inventory : MonoBehaviour
         }
 
         // Check if the item overlaps multiple objects and can't be placed
-        if (!OverlapCheck(posx, posy, inventoryItem.sizeWidth, inventoryItem.sizeHeight, inventoryItem.tileSet, ref overlapItem))
+        if (!OverlapCheck(posx, posy, ref inventoryItem, inventoryItem.sizeWidth, inventoryItem.sizeHeight, inventoryItem.tileSet, ref overlapItem))
         {
             overlapItem = null;
             return false;
@@ -152,7 +151,7 @@ public class Inventory : MonoBehaviour
     // If 0 overlaps, returns true
     // If 1 overlap, returns true
     // If 2 unique item overlaps, return false
-    private bool OverlapCheck(int posx, int posy, int width, int height, bool[,] tileSet, ref InventoryItem overlapItem)
+    private bool OverlapCheck(int posx, int posy, ref InventoryItem inventoryItem, int width, int height, bool[,] tileSet, ref InventoryItem overlapItem)
     {
         for (int x = 0; x < width; x++)
         {
@@ -165,6 +164,26 @@ public class Inventory : MonoBehaviour
                         if (overlapItem == null)
                         {
                             overlapItem = inventoryItemSlot[posx + x, posy + y];
+                            // If items are the same type and can be stacked
+                            if (inventoryItem.itemName == overlapItem.itemName && inventoryItem.isStackable)
+                            {
+                                // If the overlap item is full, just swap the items
+                                if (overlapItem.itemCount == overlapItem.itemCountMax) return true;
+                                if (overlapItem.itemCount + inventoryItem.itemCount > overlapItem.itemCountMax)
+                                {
+                                    int difference = overlapItem.itemCountMax - overlapItem.itemCount;
+                                    overlapItem.setItemCount(overlapItem.itemCount + difference);
+                                    inventoryItem.setItemCount(inventoryItem.itemCount - difference);
+                                    if (inventoryItem.itemCount == 0) inventoryItem = null;
+                                } else
+                                {
+                                    overlapItem.setItemCount(overlapItem.itemCount + inventoryItem.itemCount);
+                                    inventoryItem.setItemCount(0);
+                                    inventoryItem = null;
+                                }
+                                return false;
+                            }
+
                         }
                         else
                         {

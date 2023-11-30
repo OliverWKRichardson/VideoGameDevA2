@@ -9,7 +9,7 @@ public class InventoryController : MonoBehaviour
     public Inventory selectedInventory;
 
     // Selected (held) item
-    InventoryItem selectedItem;
+    [SerializeField] InventoryItem selectedItem;
     // Used to store an overlapping item
     InventoryItem overlapItem;
     RectTransform selectedRectTransform;
@@ -67,7 +67,7 @@ public class InventoryController : MonoBehaviour
     private void PlaceItem(Vector2Int tileClickPosition)
     {
         // Attempts to place item
-        bool placed = selectedInventory.PlaceItem(selectedItem, tileClickPosition.x, tileClickPosition.y, ref overlapItem);
+        bool placed = selectedInventory.PlaceItem(ref selectedItem, tileClickPosition.x, tileClickPosition.y, ref overlapItem);
         // If successfully placed
         if (placed) {
             // Set selected item to null to show an empty hand

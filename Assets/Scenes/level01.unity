@@ -183,7 +183,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9845796ceb7e56f489a42819b60e7250, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 69f05199cc9450844bd4c8abebb2bfea, type: 3}
   m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -219,6 +219,7 @@ MonoBehaviour:
   inventoryItemPrefab2x2: {fileID: 4366478474851683961, guid: f548973487f9b4341abff213c426311a, type: 3}
   inventoryItemPrefab1x3: {fileID: 8138476748217182386, guid: 30b2ebae20d01034ba1f5f17de58e12a, type: 3}
   inventoryItemPrefab2x3L: {fileID: 4097400154971993488, guid: 56f2f5d8b1ddcf64d9a24aaba834f0ca, type: 3}
+  basicAmmoPrefab: {fileID: 2412014305710864790, guid: d49edbb3da76d9e4095ec3fce81831c9, type: 3}
 --- !u!114 &57837064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,6 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedInventory: {fileID: 0}
+  selectedItem: {fileID: 0}
 --- !u!114 &537085691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,7 +873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &779683496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,7 +932,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
