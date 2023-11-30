@@ -32,7 +32,7 @@ public class LightmapPixelPicker : MonoBehaviour {
             // get renderer
 			Renderer hitRenderer = hitInfo.collider.GetComponent<Renderer>();
 
-            // get position on the mesh collider and convert to lightmap position
+			// get position on the mesh collider and convert to lightmap position
 			LightmapData lightmapData = LightmapSettings.lightmaps[hitRenderer.lightmapIndex];
 			Texture2D lightmapTex = lightmapData.lightmapColor;
 			Vector2 pixelUV = hitInfo.lightmapCoord;
