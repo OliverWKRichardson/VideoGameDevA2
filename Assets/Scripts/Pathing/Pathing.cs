@@ -14,6 +14,8 @@ public class Pathing : MonoBehaviour
 
     private bool foundTarget;
 
+    public GameObject PlayerUI;
+
     void Start()
     {
         seeTarget = false;
@@ -34,8 +36,8 @@ public class Pathing : MonoBehaviour
             for (int i = 0; i < visibleTargets.Count; i++) // for all visible
             {
                 // fill detection bar while in vision
-                DetectionBar detection = visibleTargets[i].Find("PlayerUI").Find("Detection Bar").GetComponent<DetectionBar>();
-                VisibilityBar visibility = visibleTargets[i].Find("PlayerUI").Find("Visibility Bar").GetComponent<VisibilityBar>();
+                DetectionBar detection = PlayerUI.transform.Find("Detection Bar").GetComponent<DetectionBar>();
+                VisibilityBar visibility = PlayerUI.transform.Find("Visibility Bar").GetComponent<VisibilityBar>();
                 float distance = Vector3.Distance(visibleTargets[0].position, transform.position);
                 if (detection != null)
                 {
@@ -60,7 +62,6 @@ public class Pathing : MonoBehaviour
             }
             if (foundTarget) // if found something
             {
-                Debug.Log("Found Target");
                 // look directly at target
                 transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
                 // set destination as target position
@@ -68,7 +69,6 @@ public class Pathing : MonoBehaviour
             }
             else // if not found something
             {
-                Debug.Log("Regaining Target");
                 // passive patrol route when starting to detect
                 transform.Rotate(new Vector3(0, 0.025f, 0)); // WIP placeholder that slowly rotates on the spot
             }
@@ -82,7 +82,6 @@ public class Pathing : MonoBehaviour
                 // if have reached end of current path
                 if (agent.remainingDistance < agent.stoppingDistance)
                 {
-                    Debug.Log("Lost Target");
                     // passive patrol route when cant see anything at all
                     transform.Rotate(new Vector3(0, 0.1f, 0)); // WIP placeholder that rotates on the spot
                 }
