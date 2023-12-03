@@ -9,12 +9,14 @@ public class DetectionBar : MonoBehaviour
     public Gradient gradient;
     public Image fill;
 
-    public float decay;
+    public float decayRate;
+
+    public float fillRate;
     private float delay = 0.0f;
 
     public void AddDetection(float vis)
     {
-        slider.value += vis;
+        slider.value += vis * fillRate * Time.deltaTime;
         fill.color = gradient.Evaluate(slider.normalizedValue);
         delay = 1.0f;
     }
@@ -23,7 +25,7 @@ public class DetectionBar : MonoBehaviour
     {
         if(delay <= 0.0f)
         {
-            slider.value -= decay * Time.deltaTime;
+            slider.value -= decayRate * Time.deltaTime;
         }
         else
         {
