@@ -99,8 +99,11 @@ MonoBehaviour:
   itemCountMax: 90
   isStackable: 1
   itemName: 0
+  displayName: Basic Ammo
   contextMenuList: 00000000
   itemCountText: {fileID: 5876496441398094242}
+  regularSprite: {fileID: 21300000, guid: caf55fdca3799424c94887a4eb16107e, type: 3}
+  equippedSprite: {fileID: 0}
 --- !u!1 &5924072042850740991
 GameObject:
   m_ObjectHideFlags: 0

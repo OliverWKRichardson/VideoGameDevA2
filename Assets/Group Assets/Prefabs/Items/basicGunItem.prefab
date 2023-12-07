@@ -98,5 +98,8 @@ MonoBehaviour:
   itemCountMax: 1
   isStackable: 0
   itemName: 3
+  displayName: Basic Gun
   contextMenuList: 00000000
   itemCountText: {fileID: 0}
+  regularSprite: {fileID: 21300000, guid: 75f75f8c0f904db419eeac8468dec8c0, type: 3}
+  equippedSprite: {fileID: 21300000, guid: bb6b45cae8dfb934caa655d3e81db313, type: 3}

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
@@ -17,10 +18,12 @@ public class Inventory : MonoBehaviour
     [SerializeField] Canvas canvas;
     RectTransform rectTransform;
 
-    // 2D Array for storing inventory data
+    // 2D Array for storing inventory tile data
     public InventoryItem[,] inventoryItemSlot;
 
-    void Start()
+    public List<InventoryItem> items;
+
+    void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
 
@@ -93,6 +96,7 @@ public class Inventory : MonoBehaviour
         if (overlapItem != null)
         {
             CleanGrid(overlapItem);
+            items.Remove(overlapItem);
         }
 
         moveItem(inventoryItem, posx, posy);
@@ -102,8 +106,6 @@ public class Inventory : MonoBehaviour
 
     private void moveItem(InventoryItem inventoryItem, int posx, int posy)
     {
-        if (inventoryItemSlot == null) Debug.Log("HOW");
-
         // Set the item as a child to the Inventory object
         RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
         rectTransform.SetParent(this.rectTransform);
@@ -118,6 +120,7 @@ public class Inventory : MonoBehaviour
                 if (tileSet[x, y]) inventoryItemSlot[posx + x, posy + y] = inventoryItem;
             }
         }
+        items.Add(inventoryItem);
 
         // Set item's onGridPosition
         inventoryItem.onGridPositionX = posx;
@@ -180,7 +183,7 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-
+        rectTransform.SetAsLastSibling();
         return true;
     }
 
@@ -197,12 +200,13 @@ public class Inventory : MonoBehaviour
         if (pickedUpItem == null) return null;
         rectTransform.SetAsLastSibling();
         CleanGrid(pickedUpItem);
+        items.Remove(pickedUpItem);
 
         return pickedUpItem;
     }
 
     // Removes references in the grid for an item
-    private void CleanGrid(InventoryItem item)
+    public void CleanGrid(InventoryItem item)
     {
         bool[,] tileSet = item.tileSet;
         for (int ix = 0; ix < item.sizeWidth; ix++)
