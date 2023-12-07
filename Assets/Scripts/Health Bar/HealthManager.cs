@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
-    public int maxHealth;
-    private int health;
+    public float maxHealth;
+    private float health;
     public HealthBar healthBar;
 
     void Start()
@@ -19,14 +19,14 @@ public class HealthManager : MonoBehaviour
         
     }
 
-    public void DamageBy(int amount)
+    public void DamageBy(float amount)
     {
         health -= amount;
         Mathf.Clamp(health, 0, maxHealth);
         healthBar.SetHealth(health);
     }
 
-    public int GetHealth()
+    public float GetHealth()
     {
         return health;
     }
