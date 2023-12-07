@@ -74,15 +74,24 @@ public class Pathing : MonoBehaviour
         }
         else // if lose sight of target
         {
+            Debug.Log("Lost target1");
             foundTarget = false;
             // if haven't heard anything
             if (!heardSomething)
             {
+                Debug.Log("Lost target2");
                 // passive patrol route when starting to detect
                 SetDestination(currentPatrolPoint.transform.position); // go to current patorl location
                 if (agent.remainingDistance < agent.stoppingDistance) // if reach current patorl location find next one
                 {
                     currentPatrolPoint = currentPatrolPoint.GetComponent<PatrolSystem>().nextPoint;
+                }
+            }
+            else
+            {
+                if (agent.remainingDistance < agent.stoppingDistance) // if reach current patorl location find next one
+                {
+                    heardSomething = false;
                 }
             }
         }
