@@ -16,6 +16,9 @@ public class Pathing : MonoBehaviour
 
     public GameObject PlayerUI;
 
+    public GameObject initialPatrolPoint;
+    private GameObject currentPatrolPoint;
+
     void Start()
     {
         seeTarget = false;
@@ -23,6 +26,7 @@ public class Pathing : MonoBehaviour
         // stay still on start
         destination = transform.position;
         foundTarget = false;
+        currentPatrolPoint = initialPatrolPoint;
     }
 
     // Update is called once per frame
@@ -42,7 +46,7 @@ public class Pathing : MonoBehaviour
                 if (detection != null)
                 {
                     detection.AddDetection((visibility.slider.normalizedValue + 0.01f) * Time.deltaTime);
-                    if(distance < 3) // if close to target immediately see it
+                    if (distance < 3) // if close to target immediately see it
                     {
                         detection.AddDetection(100.0f);
                     }
@@ -67,11 +71,6 @@ public class Pathing : MonoBehaviour
                 // set destination as target position
                 SetDestination(target.position);
             }
-            else // if not found something
-            {
-                // passive patrol route when starting to detect
-                transform.Rotate(new Vector3(0, 0.025f, 0)); // WIP placeholder that slowly rotates on the spot
-            }
         }
         else // if lose sight of target
         {
@@ -79,11 +78,11 @@ public class Pathing : MonoBehaviour
             // if haven't heard anything
             if (!heardSomething)
             {
-                // if have reached end of current path
-                if (agent.remainingDistance < agent.stoppingDistance)
+                // passive patrol route when starting to detect
+                SetDestination(currentPatrolPoint.transform.position); // go to current patorl location
+                if (agent.remainingDistance < agent.stoppingDistance) // if reach current patorl location find next one
                 {
-                    // passive patrol route when cant see anything at all
-                    transform.Rotate(new Vector3(0, 0.1f, 0)); // WIP placeholder that rotates on the spot
+                    currentPatrolPoint = currentPatrolPoint.GetComponent<PatrolSystem>().nextPoint;
                 }
             }
         }
