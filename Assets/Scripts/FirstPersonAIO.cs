@@ -250,6 +250,15 @@ public class FirstPersonAIO : MonoBehaviour
 
     #endregion
 
+    #region Inventory Settings
+
+    // (INVENTORY)
+    public Canvas inventoryCanvas;
+
+    private InventoryController inventoryController;
+
+    #endregion
+
     #endregion
 
     private void Awake()
@@ -276,6 +285,11 @@ public class FirstPersonAIO : MonoBehaviour
 
         #endregion
 
+        #region Inventory Settings - Awake
+
+        inventoryController = playerCamera.GetComponent<InventoryController>();
+
+        #endregion
     }
 
     private void Start()
@@ -394,6 +408,12 @@ public class FirstPersonAIO : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Cancel")) { ControllerPause(); }
+
+        // Toggle the inventory when E is pressed
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ToggleInventory();
+        }
         #endregion
 
         #region Movement Settings - Update
@@ -404,6 +424,15 @@ public class FirstPersonAIO : MonoBehaviour
 
         #endregion
 
+    }
+
+    // Pause/unpause the controls and open/close the inventory
+    public void ToggleInventory()
+    {
+        ControllerPause();
+        inventoryCanvas.gameObject.SetActive(controllerPauseState);
+        // When closing, clear the ground inventory
+        if (!controllerPauseState) inventoryController.CloseInventory();
     }
 
     private void FixedUpdate()
@@ -1684,6 +1713,15 @@ public class FPAIO_Editor : Editor
             #endregion
         }
         #endregion
+
+        #region UI Setup
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        GUILayout.Label("UI Setup", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        t.inventoryCanvas = (Canvas)EditorGUILayout.ObjectField(new GUIContent("Inventory Canvas", "Canvas containing inventory UI"), t.inventoryCanvas, typeof(Canvas), true);
+        #endregion 
 
         /*   
         #region FunctionSnipets

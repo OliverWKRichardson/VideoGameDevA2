@@ -98,5 +98,8 @@ MonoBehaviour:
   itemCountMax: 1
   isStackable: 0
   itemName: 2
+  displayName: Katana
   contextMenuList: 00000000
   itemCountText: {fileID: 0}
+  regularSprite: {fileID: 21300000, guid: 3d442264cb19bfb45bbbbd90ad44463e, type: 3}
+  equippedSprite: {fileID: 21300000, guid: 8172a43ca8e65bf4c8b28b03f2f71067, type: 3}

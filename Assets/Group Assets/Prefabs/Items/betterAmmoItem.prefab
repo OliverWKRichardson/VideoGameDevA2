@@ -234,5 +234,8 @@ MonoBehaviour:
   itemCountMax: 50
   isStackable: 1
   itemName: 1
+  displayName: Better Ammo
   contextMenuList: 
   itemCountText: {fileID: 1797111388449572127}
+  regularSprite: {fileID: 21300000, guid: d61efbe3a7d275342a23660a7d426df3, type: 3}
+  equippedSprite: {fileID: 0}

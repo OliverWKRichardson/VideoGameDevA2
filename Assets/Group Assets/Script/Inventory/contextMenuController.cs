@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class contextMenuController : MonoBehaviour
 {
     RectTransform rectTransform;
 
+    [SerializeField] TextMeshProUGUI itemNameText;
     [SerializeField] Button equipButton;
     [SerializeField] Button craftBasicGunButton;
     [SerializeField] Button craftBetterGunButton;
@@ -43,8 +45,9 @@ public class contextMenuController : MonoBehaviour
 
     public void createContextMenu(Vector2 position, InventoryItem item)
     {
+        itemNameText.SetText(item.displayName);
         clearContextMenu();
-        int y = 0;
+        int y = -20;
         InventoryItem.contextOptions[] options = item.contextMenuList;
         if (contains(options, InventoryItem.contextOptions.Equipable)) {
             equipButton.gameObject.SetActive(true);
@@ -63,10 +66,8 @@ public class contextMenuController : MonoBehaviour
             craftBetterGunRT.localPosition = new Vector3(0, y, 0);
             y -= 20;
         }
-        if (y != 0) {
-            rectTransform.sizeDelta = new Vector2(120, -y);
-            moveToLocation(position);
-        }
+        rectTransform.sizeDelta = new Vector2(160, -y);
+        moveToLocation(position);
     }
 
     private bool contains(Array array, object obj)
