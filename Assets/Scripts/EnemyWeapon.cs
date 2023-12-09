@@ -62,6 +62,17 @@ public class EnemyWeapon : MonoBehaviour
         }
     }
 
+    public void Fire(HealthManager hp)
+    {
+        fire = true;
+        hp.DamageBy(damage * Time.deltaTime);
+    }
+
+    public void StopFire()
+    {
+        fire = false;
+    }
+
     void FixedUpdate()
     {
         if(beam.enabled)
@@ -74,11 +85,6 @@ public class EnemyWeapon : MonoBehaviour
             beam.SetPosition(1, hitPosition);
 
             hitParticles.transform.position = hitPosition;
-
-            if(cast && hit.collider.TryGetComponent(out HealthManager healthManager))
-            {
-                healthManager.DamageBy(damage * Time.deltaTime);
-            }
         }
     }
 }

@@ -33,16 +33,6 @@ public class Pathing : MonoBehaviour
         MyWeapon = weapon.GetComponent<EnemyWeapon>();
     }
 
-    private void Fire()
-    {
-        MyWeapon.fire = true;
-    }
-
-    private void StopFiring()
-    {
-        MyWeapon.fire = false;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -88,16 +78,16 @@ public class Pathing : MonoBehaviour
                 float distance = Vector3.Distance(target.position, transform.position);
                 if(distance < firingDistance)
                 {
-                    Fire();
+                    MyWeapon.Fire(target.GetComponent<HealthManager>());
                 }
                 else
                 {
-                    StopFiring();
+                    MyWeapon.StopFire();
                 }
             }
             else
             {
-                StopFiring();
+                MyWeapon.StopFire();
             }
         }
         else // if lose sight of target

@@ -51,7 +51,10 @@ public class FieldOfView : MonoBehaviour
                 float disToTarget = Vector3.Distance(transform.position, target.position);
                 if(!Physics.Raycast(transform.position, dirToTarget, disToTarget, ignoreMask)){
                     // can see target
-                    visibleTargets.Add(target);
+                    if(target.gameObject.tag == "Player")
+                    {   
+                        visibleTargets.Add(target);
+                    }
                 }
             }
         }
