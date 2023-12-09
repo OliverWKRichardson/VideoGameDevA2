@@ -18,6 +18,9 @@ public class Pathing : MonoBehaviour
 
     public GameObject initialPatrolPoint;
     private GameObject currentPatrolPoint;
+    public GameObject weapon;
+    private EnemyWeapon MyWeapon;
+    public int firingDistance;
 
     void Start()
     {
@@ -27,6 +30,17 @@ public class Pathing : MonoBehaviour
         destination = transform.position;
         foundTarget = false;
         currentPatrolPoint = initialPatrolPoint;
+        MyWeapon = weapon.GetComponent<EnemyWeapon>();
+    }
+
+    private void Fire()
+    {
+        MyWeapon.fire = true;
+    }
+
+    private void StopFiring()
+    {
+        MyWeapon.fire = false;
     }
 
     // Update is called once per frame
@@ -70,6 +84,20 @@ public class Pathing : MonoBehaviour
                 transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
                 // set destination as target position
                 SetDestination(target.position);
+                // shoot if close enougth
+                float distance = Vector3.Distance(target.position, transform.position);
+                if(distance < firingDistance)
+                {
+                    Fire();
+                }
+                else
+                {
+                    StopFiring();
+                }
+            }
+            else
+            {
+                StopFiring();
             }
         }
         else // if lose sight of target
