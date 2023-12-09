@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class spawnItemsForTesting : MonoBehaviour
 {
-    Inventory inventory;
+    [SerializeField] Inventory inventory;
 
     [SerializeField] GameObject basicAmmo;
     [SerializeField] GameObject betterAmmo;
@@ -13,11 +13,6 @@ public class spawnItemsForTesting : MonoBehaviour
     [SerializeField] GameObject betterGun;
     [SerializeField] GameObject basicGunPart;
     [SerializeField] GameObject betterGunPart;
-
-    void Awake()
-    {
-        inventory = GetComponent<Inventory>();
-    }
 
     public void spawn()
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ public class PlayerPickup : MonoBehaviour
     // Manages deletion of pickups
     [SerializeField] PickupController pickupController;
 
+    [SerializeField] Canvas dialogueCanvas;
+
     // Prefabs for all items
     [SerializeField] GameObject basicAmmo;
     [SerializeField] GameObject betterAmmo;
@@ -31,11 +34,25 @@ public class PlayerPickup : MonoBehaviour
     // Current pickup being looked at
     Pickup currentPickup;
 
+    // Current npc being looked at
+    NPCDialogue currentNPC;
+
     void Update()
     {
         // Check for pickup
-        Pickup newPickup = GetViewedPickup();
+        GameObject newGameObject = GetViewedGameobject();
 
+        if (newGameObject == null || dialogueCanvas.gameObject.activeInHierarchy) {
+            currentPickup = null;
+            currentNPC = null;
+            pickupMessage.gameObject.SetActive(false);
+            return;
+        }
+
+        Pickup newPickup = newGameObject.GetComponent<Pickup>();
+        NPCDialogue newNPC = newGameObject.GetComponent<NPCDialogue>();
+
+        
         // If new pickup
         if (newPickup != currentPickup)
         {
@@ -45,73 +62,93 @@ public class PlayerPickup : MonoBehaviour
                 // Enable text
                 pickupMessage.gameObject.SetActive(true);
                 // Tell user to pickup the item
-                if (currentPickup.itemCount == 1) {
+                if (currentPickup.itemCount == 1)
+                {
                     pickupMessage.SetText("Press f to pickup " + currentPickup.displayName);
-                } else {
+                }
+                else
+                {
                     pickupMessage.SetText("Press f to pickup " + currentPickup.displayName + " (" + currentPickup.itemCount + ")");
                 }
-            } else
+            }
+        }
+        
+        // If new npc
+        if (newNPC != currentNPC)
+        {
+            currentNPC = newNPC;
+            if (currentNPC != null)
             {
-                // Hide the text
-                pickupMessage.gameObject.SetActive(false);
+                // Enable text
+                pickupMessage.gameObject.SetActive(true);
+                // Tell user to talk
+
+                pickupMessage.SetText("Press f to talk to " + currentNPC.NpcName);
             }
         }
 
         // When F is pressed
         if (Input.GetKeyDown(KeyCode.F))
         {
-            // If there is no pickup or inventory is open then stop
-            if (currentPickup == null || groundInventory.gameObject.activeInHierarchy) return;
+            if (groundInventory.gameObject.activeInHierarchy || dialogueCanvas.gameObject.activeInHierarchy) return;
 
-            // Turn on inventory
-            player.ToggleInventory();
-            // Spawn respective item in the ground inventory
-            switch (currentPickup.pickupName)
+            if (currentPickup != null)
             {
-                case Pickup.PickupName.BasicAmmo:
-                    groundInventory.SpawnItem(basicAmmo, 0, 0, currentPickup.itemCount);
-                    break;
-                case Pickup.PickupName.BetterAmmo:
-                    groundInventory.SpawnItem(betterAmmo, 0, 0, currentPickup.itemCount);
-                    break;
-                case Pickup.PickupName.Katana:
-                    groundInventory.SpawnItem(katana, 0, 0, currentPickup.itemCount);
-                    break;
-                case Pickup.PickupName.BasicGun:
-                    groundInventory.SpawnItem(basicGun, 0, 0, currentPickup.itemCount);
-                    break;
-                case Pickup.PickupName.BetterGun:
-                    groundInventory.SpawnItem(betterGun, 0, 0, currentPickup.itemCount);
-                    break;
-                case Pickup.PickupName.BasicGunPart:
-                    groundInventory.SpawnItem(basicGunPart, 0, 0, currentPickup.itemCount);
-                    break;
-                case Pickup.PickupName.BetterGunPart:
-                    groundInventory.SpawnItem(betterGunPart, 0, 0, currentPickup.itemCount);
-                    break;
+                // Turn on inventory
+                player.ToggleInventory();
+                // Spawn respective item in the ground inventory
+                switch (currentPickup.pickupName)
+                {
+                    case Pickup.PickupName.BasicAmmo:
+                        groundInventory.SpawnItem(basicAmmo, 0, 0, currentPickup.itemCount);
+                        break;
+                    case Pickup.PickupName.BetterAmmo:
+                        groundInventory.SpawnItem(betterAmmo, 0, 0, currentPickup.itemCount);
+                        break;
+                    case Pickup.PickupName.Katana:
+                        groundInventory.SpawnItem(katana, 0, 0, currentPickup.itemCount);
+                        break;
+                    case Pickup.PickupName.BasicGun:
+                        groundInventory.SpawnItem(basicGun, 0, 0, currentPickup.itemCount);
+                        break;
+                    case Pickup.PickupName.BetterGun:
+                        groundInventory.SpawnItem(betterGun, 0, 0, currentPickup.itemCount);
+                        break;
+                    case Pickup.PickupName.BasicGunPart:
+                        groundInventory.SpawnItem(basicGunPart, 0, 0, currentPickup.itemCount);
+                        break;
+                    case Pickup.PickupName.BetterGunPart:
+                        groundInventory.SpawnItem(betterGunPart, 0, 0, currentPickup.itemCount);
+                        break;
+                }
+                // Either disables the pickup or destroys it based on object pooling
+                pickupController.DisablePickup(currentPickup.gameObject, currentPickup.pickupName);
+                currentPickup = null;
+                pickupMessage.gameObject.SetActive(false);
+            } else if (currentNPC != null)
+            {
+                currentNPC.startDialogue();
             }
-            // Either disables the pickup or destroys it based on object pooling
-            pickupController.DisablePickup(currentPickup.gameObject, currentPickup.pickupName);
-            currentPickup = null;
-            pickupMessage.gameObject.SetActive(false);
         }
     }
 
-    private Pickup GetViewedPickup()
+    private GameObject GetViewedGameobject()
     {
         RaycastHit[] hits;
         // Get all objects infront of player within pickupDistance
         hits = Physics.RaycastAll(transform.position, transform.forward, pickupDistance);
-        // Array is ordered backwards by distance
-        for (int i = hits.Length - 1; i >= 0; i--)
+        // Order the array
+        RaycastHit[] sortedHits = hits.OrderBy(hit => hit.distance).ToArray();
+        // Array is ordered acending by distance
+        for (int i = 0; i < sortedHits.Length; i++)
         {
             // If object is Player, ignore
-            if (!hits[i].transform.gameObject.CompareTag("Player"))
+            if (!sortedHits[i].transform.gameObject.CompareTag("Player") && !sortedHits[i].transform.gameObject.CompareTag("PlayerAttachment"))
             {
                 // If pickup, return
-                if (hits[i].transform.gameObject.CompareTag("Pickup"))
+                if (sortedHits[i].transform.gameObject.CompareTag("Pickup") || sortedHits[i].transform.gameObject.CompareTag("NPC"))
                 {
-                    return hits[i].transform.gameObject.GetComponent<Pickup>();
+                    return sortedHits[i].transform.gameObject;
                 }
                 else
                 {

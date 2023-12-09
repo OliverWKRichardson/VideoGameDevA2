@@ -1,0 +1,7 @@
+NPCDialogue "Hello, I am an npc!"
+NPCResponse "Hello npc" NPCPath "4"
+NPCResponse "Take my three basic gun parts" NPCPath "6" NPCCase "has,basicGunPart,3" NPCState "0,false"
+NPCDialogue "Thanks for talking to me"
+NPCResponse "Bye" NPCClose
+NPCDialogue "Sure, I will give you some ammunition"
+NPCResponse "*Give the materials*" NPCReward "basicAmmo,10" NPCTake "basicGunPart,3" NPCSetState "0,true" NPCClose

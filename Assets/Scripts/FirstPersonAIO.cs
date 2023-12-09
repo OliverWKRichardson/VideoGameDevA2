@@ -58,6 +58,7 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -255,7 +256,26 @@ public class FirstPersonAIO : MonoBehaviour
     // (INVENTORY)
     public Canvas inventoryCanvas;
 
+    public Canvas dialogueCanvas;
+
     private InventoryController inventoryController;
+
+    public GameObject katanaModel;
+    public GameObject basicGunModel;
+    public GameObject betterGunModel;
+
+    private WeaponInterval katanaInterval;
+    private WeaponInterval basicGunInterval;
+    private WeaponInterval betterGunInterval;
+
+    private enum weaponState
+    {
+        none,
+        Katana,
+        BasicGun,
+        BetterGun
+    }
+    private weaponState weapon = weaponState.none;
 
     #endregion
 
@@ -288,6 +308,10 @@ public class FirstPersonAIO : MonoBehaviour
         #region Inventory Settings - Awake
 
         inventoryController = playerCamera.GetComponent<InventoryController>();
+
+        katanaInterval = katanaModel.GetComponent<WeaponInterval>();
+        basicGunInterval = basicGunModel.GetComponent<WeaponInterval>();
+        betterGunInterval = betterGunModel.GetComponent<WeaponInterval>();
 
         #endregion
     }
@@ -410,7 +434,7 @@ public class FirstPersonAIO : MonoBehaviour
         if (Input.GetButtonDown("Cancel")) { ControllerPause(); }
 
         // Toggle the inventory when E is pressed
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !dialogueCanvas.gameObject.activeInHierarchy)
         {
             ToggleInventory();
         }
@@ -424,6 +448,53 @@ public class FirstPersonAIO : MonoBehaviour
 
         #endregion
 
+        #region Combat Settings - Update
+
+        if (!controllerPauseState) { 
+            if (Input.GetMouseButtonDown(0))
+            {
+                UseWeapon();
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                StopWeapon();
+            }
+        }
+
+        #endregion
+
+    }
+
+    private void UseWeapon()
+    {
+        switch (weapon)
+        {
+            case weaponState.Katana:
+                katanaInterval.weaponEnabled = true;
+                break;
+            case weaponState.BasicGun:
+                basicGunInterval.weaponEnabled = true;
+                break;
+            case weaponState.BetterGun:
+                betterGunInterval.weaponEnabled = true;
+                break;
+        }
+    }
+
+    private void StopWeapon()
+    {
+        switch (weapon)
+        {
+            case weaponState.Katana:
+                katanaInterval.weaponEnabled = false;
+                break;
+            case weaponState.BasicGun:
+                basicGunInterval.weaponEnabled = false;
+                break;
+            case weaponState.BetterGun:
+                betterGunInterval.weaponEnabled = false;
+                break;
+        }
     }
 
     // Pause/unpause the controls and open/close the inventory
@@ -432,7 +503,55 @@ public class FirstPersonAIO : MonoBehaviour
         ControllerPause();
         inventoryCanvas.gameObject.SetActive(controllerPauseState);
         // When closing, clear the ground inventory
-        if (!controllerPauseState) inventoryController.CloseInventory();
+        if (!controllerPauseState)
+        {
+            inventoryController.CloseInventory();
+            ChangeWeapon(inventoryController.equippedItem);
+        }
+    }
+
+    private void ChangeWeapon(InventoryItem item)
+    {
+        if (item == null) {
+            if (item == null && weapon == weaponState.none) return;
+        }
+        else if (item.itemName.ToString() == weapon.ToString()) return;
+        ToggleWeaponModel(weapon);
+        if (item == null) weapon = weaponState.none;
+        else
+        {
+            switch (item.itemName)
+            {
+                case InventoryItem.ItemName.Katana:
+                    weapon = weaponState.Katana;
+                    ToggleWeaponModel(weapon);
+                    break;
+                case InventoryItem.ItemName.BasicGun:
+                    weapon = weaponState.BasicGun;
+                    ToggleWeaponModel(weapon);
+                    break;
+                case InventoryItem.ItemName.BetterGun:
+                    weapon = weaponState.BetterGun;
+                    ToggleWeaponModel(weapon);
+                    break;
+            }
+        }
+    }
+
+    private void ToggleWeaponModel(weaponState state)
+    {
+        switch (state)
+        {
+            case weaponState.Katana:
+                katanaModel.SetActive(!katanaModel.activeInHierarchy);
+                break;
+            case weaponState.BasicGun:
+                basicGunModel.SetActive(!basicGunModel.activeInHierarchy);
+                break;
+            case weaponState.BetterGun:
+                betterGunModel.SetActive(!betterGunModel.activeInHierarchy);
+                break;
+        }
     }
 
     private void FixedUpdate()
@@ -1721,6 +1840,10 @@ public class FPAIO_Editor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.Space();
         t.inventoryCanvas = (Canvas)EditorGUILayout.ObjectField(new GUIContent("Inventory Canvas", "Canvas containing inventory UI"), t.inventoryCanvas, typeof(Canvas), true);
+        t.dialogueCanvas = (Canvas)EditorGUILayout.ObjectField(new GUIContent("Dialogue Canvas", "Canvas containing dialogue UI"), t.dialogueCanvas, typeof(Canvas), true);
+        t.katanaModel = (GameObject) EditorGUILayout.ObjectField(new GUIContent("Katana model", "Model for the Katana Weapon"), t.katanaModel, typeof(GameObject), true);
+        t.basicGunModel = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Basic Gun model", "Model for the Basic Gun Weapon"), t.basicGunModel, typeof(GameObject), true);
+        t.betterGunModel = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Better Gun model", "Model for the Better Gun Weapon"), t.betterGunModel, typeof(GameObject), true);
         #endregion 
 
         /*   

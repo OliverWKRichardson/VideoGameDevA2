@@ -28,7 +28,7 @@ public class InventoryController : MonoBehaviour
     RectTransform selectedRectTransform;
 
     // Equipped Item (Weapon)
-    InventoryItem equippedItem;
+    [HideInInspector] public InventoryItem equippedItem;
 
     // Item that the context menu is referencing
     InventoryItem rightClickItem;
@@ -202,6 +202,7 @@ public class InventoryController : MonoBehaviour
     {
         if (selectedItem != null)
         {
+            if (equippedItem == selectedItem) equippedItem = null;
             // Create the pickup
             SpawnPickup(selectedItem);
             Destroy(selectedItem.gameObject);
@@ -211,6 +212,7 @@ public class InventoryController : MonoBehaviour
         List<InventoryItem> items = groundInventory.items;
         foreach (InventoryItem item in items)
         {
+            if (equippedItem == item) equippedItem = null;
             SpawnPickup(item);
             groundInventory.CleanGrid(item);
             Destroy(item.gameObject);
@@ -262,7 +264,7 @@ public class InventoryController : MonoBehaviour
     }
 
     // Use a certain amount of materials in the inventory
-    private bool UseMaterials(InventoryItem.ItemName itemName, int requireCount)
+    public bool UseMaterials(InventoryItem.ItemName itemName, int requireCount)
     {
         // Find the materials if they exist
         Queue<InventoryItem> craftItems = FindMaterials(itemName, requireCount);
@@ -291,7 +293,7 @@ public class InventoryController : MonoBehaviour
 
     // Go through inventory to find materials to a certain amount
     // Returns a Queue only if it finds enough materials
-    private Queue<InventoryItem> FindMaterials(InventoryItem.ItemName itemName, int requiredCount)
+    public Queue<InventoryItem> FindMaterials(InventoryItem.ItemName itemName, int requiredCount)
     {
         int materialCount = 0;
         // Queue used to retain order of materials

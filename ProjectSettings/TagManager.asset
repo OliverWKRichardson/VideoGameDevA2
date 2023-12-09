@@ -7,6 +7,8 @@ TagManager:
   - Box
   - Enemy
   - Pickup
+  - PlayerAttachment
+  - NPC
   layers:
   - Default
   - TransparentFX
