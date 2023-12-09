@@ -1,7 +1,11 @@
-NPCDialogue "Hello, I am an npc!"
-NPCResponse "Hello npc" NPCPath "4"
-NPCResponse "Take my three basic gun parts" NPCPath "6" NPCCase "has,basicGunPart,3" NPCState "0,false"
-NPCDialogue "Thanks for talking to me"
-NPCResponse "Bye" NPCClose
-NPCDialogue "Sure, I will give you some ammunition"
-NPCResponse "*Give the materials*" NPCReward "basicAmmo,10" NPCTake "basicGunPart,3" NPCSetState "0,true" NPCClose
+NPCDialogue "Hello, my name is beard man."
+NPCResponse "Hello, where can I find my items?" NPCPath "6"
+NPCResponse "Is there anything I can do for you?" NPCPath "8" NPCState "0,false"
+NPCResponse "I have the three basic gun parts you wanted." NPCPath "10" NPCCase "has,basicGunPart,3" NPCState "0,false"
+NPCResponse "Goodbye" NPCClose
+NPCDialogue "You can press E to open your inventory."
+NPCResponse "Thanks" NPCPath "1"
+NPCDialogue "Come back with three basic gun parts and we'll trade"
+NPCResponse "Sure" NPCPath "1"
+NPCDialogue "I will trade you for some ammunition!"
+NPCResponse "*Give the materials*" NPCReward "basicAmmo,30" NPCTake "basicGunPart,3" NPCSetState "0,true" NPCClose

@@ -23,6 +23,7 @@ public class DialogueController : MonoBehaviour
     [SerializeField] GameObject basicGunPart;
     [SerializeField] GameObject betterGunPart;
 
+    // Inventory Controller used for checking/taking/adding items
     [SerializeField] InventoryController inventoryController;
 
     // Text Mesh Pro which holds the NPCs Dialogue
@@ -51,13 +52,12 @@ public class DialogueController : MonoBehaviour
 
     // NPC calls this with it's dialogue file
     // name is the name of the NPC
-    // lines is the set of dialogue and responses programmed
-    // states is the set of states to make unlockable and lockable dialogue
     public void startDialogue(string name, NPCDialogue dialogue)
     {
         // Activate the canvas
         gameObject.SetActive(true);
 
+        // Unpause the controller
         player.ControllerPause();
 
         // Set current dialogue
@@ -67,6 +67,7 @@ public class DialogueController : MonoBehaviour
         LoadLine(name, dialogue.lines, 0);
     }
 
+    // Close the ui and re-enable controller
     public void closeDialogue()
     {
         npcDialogue = null;
@@ -108,12 +109,14 @@ public class DialogueController : MonoBehaviour
         }
 
         bool nextLine = false;
+        // Top most y level for buttons
         int yLevel = 2;
         // GETS THE PLAYER RESPONSES
         // Check if there is a next line
         if (lineNo + 1 < lines.Length) {
-            // If there is a next line, generate a response and check next line
+            // generate a response and check next line
             nextLine = GenerateResponse(lines[lineNo + 1], Option1Response, Option1Button, Option1Text, yLevel);
+            // Don't move y level if button is not of use
             if (Option1Text.text != "") yLevel -= 45;
         }
         if (lineNo + 2 < lines.Length && nextLine) {
@@ -123,7 +126,7 @@ public class DialogueController : MonoBehaviour
         if (lineNo + 3 < lines.Length && nextLine)
         {
             nextLine = GenerateResponse(lines[lineNo + 3], Option3Response, Option3Button, Option3Text, yLevel);
-            if (Option1Text.text != "") yLevel -= 45;
+            if (Option3Text.text != "") yLevel -= 45;
         }
         if (lineNo + 4 < lines.Length && nextLine)
         {
@@ -149,6 +152,7 @@ public class DialogueController : MonoBehaviour
         // If the line requires a state, check the state to see if it is met
         if (line.IndexOf("NPCState") != -1)
         {
+            // State looks like "0,false" where state 0 needs to be false
             bool[] states = npcDialogue.states;
             string npcState = GetTextBetweenChars('"', line.IndexOf("NPCState"), line);
             string[] statecombo = npcState.Split(',');
@@ -164,6 +168,7 @@ public class DialogueController : MonoBehaviour
         {
             string npcCase = GetTextBetweenChars('"', line.IndexOf("NPCCase"), line);
             string[] casecombo = npcCase.Split(',');
+            // "has,basicAmmo,5" checks if the user has 5 basicAmmo
             // If the case is "has" item
             if (casecombo[0] == "has")
             {
