@@ -1,4 +1,4 @@
-NPCDialogue "Hello, my name is beard man."
+NPCDialogue "Hello, my name is suit man."
 NPCResponse "Hello, where can I find my items?" NPCPath "6"
 NPCResponse "Is there anything I can do for you?" NPCPath "8" NPCState "0,false"
 NPCResponse "I have the three basic gun parts you wanted." NPCPath "10" NPCCase "has,basicGunPart,3" NPCState "0,false"
