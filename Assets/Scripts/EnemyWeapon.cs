@@ -13,27 +13,41 @@ public class EnemyWeapon : MonoBehaviour
     public float maxLength;
     public bool fire;
     public float damage;
+    private AudioSource sound;
+    private bool playing;
 
     private void Activate()
     {
-        beam.enabled = true;
-        hitParticles.Play();
-        emissionParticles.Play();
+        if(!playing)
+        {
+            beam.enabled = true;
+            sound.Play();
+            hitParticles.Play();
+            emissionParticles.Play();
+            playing = true;
+        }
     }
 
     private void Deactivate()
     {
-        beam.enabled = false;
-        beam.SetPosition(0, barrelEnd.position);
-        beam.SetPosition(1, barrelEnd.position);
-        hitParticles.Stop();
-        emissionParticles.Stop();
+        if(playing)
+        {
+            beam.enabled = false;
+            beam.SetPosition(0, barrelEnd.position);
+            beam.SetPosition(1, barrelEnd.position);
+            hitParticles.Stop();
+            emissionParticles.Stop();
+            sound.Stop();
+            playing = false;
+        } 
     }
 
     void Awake()
     {
         beam.enabled = false;
         fire = false;
+        sound = GetComponent<AudioSource>();
+        playing = false;
     }
 
     void Update()

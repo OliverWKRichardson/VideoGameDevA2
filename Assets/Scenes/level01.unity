@@ -3777,7 +3777,8 @@ PrefabInstance:
       propertyPath: initialPatrolPoint
       value: 
       objectReference: {fileID: 568567538}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7705519801158341599, guid: 572878a2ed1ca5440a6d86c703603a05, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -10532,10 +10533,6 @@ PrefabInstance:
     - target: {fileID: 4400818854004255063, guid: 0ab3927cbfc70f3408735e99ad30ab33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8025401221296173612, guid: 0ab3927cbfc70f3408735e99ad30ab33, type: 3}
-      propertyPath: moveWithTransform
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8025401221296173612, guid: 0ab3927cbfc70f3408735e99ad30ab33, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
@@ -25266,7 +25263,7 @@ GameObject:
   - component: {fileID: 327512503289777066}
   - component: {fileID: 2400345702864583042}
   - component: {fileID: 3170444328154860067}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MeleeHitBox
   m_TagString: PlayerAttachment
   m_Icon: {fileID: 0}

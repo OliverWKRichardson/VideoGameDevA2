@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4400818854004255063}
   - component: {fileID: 8025401221296173612}
   - component: {fileID: 6719609621897575360}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FogEffect 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
