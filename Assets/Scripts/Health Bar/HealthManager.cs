@@ -12,6 +12,7 @@ public class HealthManager : MonoBehaviour
     public GameObject gameoverScreen;
     private float timer;
     private bool timerActive;
+    public bool gameOver = false;
 
     void Start()
     {
@@ -38,7 +39,7 @@ public class HealthManager : MonoBehaviour
         health -= amount;
         Mathf.Clamp(health, 0, maxHealth);
         healthBar.SetHealth(health);
-        if(health <= 0)
+        if(health <= 0 && gameOver)
         {
             Die();
         }
