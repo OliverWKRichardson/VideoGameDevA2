@@ -10459,13 +10459,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1237657871723319688}
-  - component: {fileID: 7950833208437807902}
+  - component: {fileID: 4391685617662473504}
   - component: {fileID: 344032064272600076}
   - component: {fileID: 8139460866475042296}
   - component: {fileID: 7432730424650225692}
   - component: {fileID: 3172457972716784407}
   - component: {fileID: 932348386910969945}
   - component: {fileID: 1823058300387284430}
+  - component: {fileID: 6274607405519321538}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -10491,7 +10492,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 192.979, z: 0}
---- !u!114 &7950833208437807902
+--- !u!114 &4391685617662473504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10500,11 +10501,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7527792896707745517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1da2b385b83cd5647a31f6f759421fe2, type: 3}
+  m_Script: {fileID: 11500000, guid: 02d65f971a5b6c24798d7293a1feabab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
   healthBar: {fileID: 8474861143429315050}
+  gameoverScreen: {fileID: 0}
+  gameOver: 0
 --- !u!195 &344032064272600076
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10701,6 +10704,21 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &6274607405519321538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7527792896707745517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e08967b103c4c40a6d6dd94052d9ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loots: 
+  minItemCount: 
+  maxItemCount: 
 --- !u!1 &8801358911065583068
 GameObject:
   m_ObjectHideFlags: 0
