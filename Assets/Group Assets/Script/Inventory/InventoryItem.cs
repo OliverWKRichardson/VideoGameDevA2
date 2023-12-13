@@ -65,15 +65,16 @@ public class InventoryItem : MonoBehaviour
 
     // Sprite for this item
     [SerializeField] Sprite regularSprite;
-    // Sprite for this item if it can be equipped
+    // Sprite for this item if it can be equipped (not necessary on all items)
     [SerializeField] Sprite equippedSprite;
+    // Image component used to change sprites
     Image imageComponent;
 
     void Awake()
     {
         imageComponent = GetComponent<Image>();
 
-        // Alter the size of the object based on tileDimension
+        // Alter the size of the item based on tileDimension
         Vector2 size = new Vector2();
         size.x = sizeWidth * Inventory.tileDimension;
         size.y = sizeHeight * Inventory.tileDimension;
@@ -91,11 +92,12 @@ public class InventoryItem : MonoBehaviour
         }
     }
 
+    // Rotate the item
     public void Rotate()
     {
         // Rotate the 2D array
         TileSetRotate();
-        // Rotate the item and switch width and height
+        // Rotate the item
         rotation += 90;
         if (rotation == 360) rotation = 0;
         RectTransform rectTransform = GetComponent<RectTransform>();
@@ -154,6 +156,7 @@ public class InventoryItem : MonoBehaviour
         {
             for (int y = 0; y < tileSet.GetLength(1); y++)
             {
+                // Move the obect at x, y to y, x
                 newTileSet[y, x] = tileSet[x, y];
             }
         }
@@ -165,10 +168,12 @@ public class InventoryItem : MonoBehaviour
     {
         for (int x = 0; x < tileSet.GetLength(0); x++)
         {
+            // start and end indexes
             int start = 0;
             int end = tileSet.GetLength(1) - 1;
             while(start < end)
             {
+                // Go along the column from each end and swap
                 bool temp = tileSet[x, start];
                 tileSet[x, start] = tileSet[x, end];
                 tileSet[x, end] = temp;

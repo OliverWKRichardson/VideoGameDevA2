@@ -1,11 +1,14 @@
 NPCDialogue "Hello, my name is suit man."
 NPCResponse "Hello, where can I find my items?" NPCPath "6"
 NPCResponse "Is there anything I can do for you?" NPCPath "8" NPCState "0,false"
-NPCResponse "I have the three basic gun parts you wanted." NPCPath "10" NPCCase "has,basicGunPart,3" NPCState "0,false"
-NPCResponse "Goodbye" NPCClose
+NPCResponse "I have the three basic gun parts you wanted." NPCPath "13" NPCCase "has,basicGunPart,3" NPCState "0,false"
+NPCResponse "Goodbye." NPCClose
 NPCDialogue "You can press E to open your inventory."
-NPCResponse "Thanks" NPCPath "1"
-NPCDialogue "Come back with three basic gun parts and we'll trade"
-NPCResponse "Sure" NPCPath "1"
-NPCDialogue "I will trade you for some ammunition!"
+NPCResponse "Thanks." NPCPath "1"
+NPCDialogue "Come back with three basic gun parts and we'll trade."
+NPCResponse "What will you give me in return?" NPCPath "11"
+NPCResponse "No Thanks." NPCClose
+NPCDialogue "I will give you some ammunition!"
+NPCResponse "Sounds like a good trade." NPCPath "1"
+NPCDialogue "Hand over the materials and I'll give you the ammunition."
 NPCResponse "*Give the materials*" NPCReward "basicAmmo,30" NPCTake "basicGunPart,3" NPCSetState "0,true" NPCClose

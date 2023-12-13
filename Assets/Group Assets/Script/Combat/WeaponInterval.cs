@@ -24,8 +24,10 @@ public class WeaponInterval : MonoBehaviour
 
     [SerializeField] private weaponType type;
 
+    // Script for shooting a gun
     ShootGun shootGun;
 
+    // Script for melee weapon
     SwingWeapon swingWeapon;
 
     void Awake()
@@ -55,6 +57,7 @@ public class WeaponInterval : MonoBehaviour
         // Loop while meant to be fighting
         while (currentWeaponState)
         {
+            // Perform shoot or swing
             if (type == weaponType.Gun) shootGun.Shoot();
             else swingWeapon.Swing();
             // Wait for the fight interval

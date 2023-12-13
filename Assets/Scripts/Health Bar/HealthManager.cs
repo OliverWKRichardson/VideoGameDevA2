@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class HealthManager : MonoBehaviour
 {
     public float maxHealth;
-    private float health;
+    protected float health;
     public HealthBar healthBar;
     public GameObject gameoverScreen;
     private float timer;

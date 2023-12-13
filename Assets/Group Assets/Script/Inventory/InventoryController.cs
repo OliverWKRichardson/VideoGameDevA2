@@ -8,16 +8,20 @@ public class InventoryController : MonoBehaviour
     // Handles multiple inventories and when the mouse is not on an inventory
     [HideInInspector] public Inventory selectedInventory;
 
+    // Reference to the main inventory and ground inventory
     [SerializeField] Inventory mainInventory;
     [SerializeField] Inventory groundInventory;
     private InventoryInteract mainInventoryInteract;
     private InventoryInteract groundInventoryInteract;
+
+    // Context Menu and it's controller
     [SerializeField] GameObject contextMenu;
     contextMenuController contextMenuCont;
 
     // Manages dropping items
     [SerializeField] PickupController pickupController;
 
+    // Changes when the inventory opens/closes
     bool inventoryActive = false;
 
     // Selected (held) item
@@ -88,11 +92,12 @@ public class InventoryController : MonoBehaviour
         }
     }
 
+    // Right Mouse button event
     private void RightMouseButtonPress()
     {
+        // No context menu when an item is held
         if (selectedItem == null)
         {
-
             Vector2 position = Input.mousePosition;
 
             // Find Coordinates on inventory for mouse click position
@@ -108,6 +113,7 @@ public class InventoryController : MonoBehaviour
     // Performs place/pickup 
     private void LeftMouseButtonPress()
     {
+        // Hide the context menu
         contextMenuCont.gameObject.SetActive(false);
 
         Vector2 position = Input.mousePosition;
@@ -254,9 +260,11 @@ public class InventoryController : MonoBehaviour
     // Spawn an item as the selected item
     private void SpawnSelectedItem(GameObject prefab)
     {
+        // Instantiate item as the selected item
         selectedItem = Instantiate(prefab).GetComponent<InventoryItem>();
         selectedRectTransform = selectedItem.GetComponent<RectTransform>();
         selectedRectTransform.localScale = selectedRectTransform.localScale * canvas.scaleFactor;
+        // Attach the item to the main inventory
         RectTransform mainInventoryRectTransform = mainInventory.gameObject.GetComponent<RectTransform>();
         selectedRectTransform.parent = mainInventoryRectTransform;
         mainInventoryRectTransform.SetAsLastSibling();

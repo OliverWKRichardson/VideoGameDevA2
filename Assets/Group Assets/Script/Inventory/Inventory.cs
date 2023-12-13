@@ -20,14 +20,17 @@ public class Inventory : MonoBehaviour
     // 2D Array for storing inventory tile data
     public InventoryItem[,] inventoryItemSlot;
 
+    // List of items in inventory
     public List<InventoryItem> items;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
 
+        // initiate size of inventory
         InitiateSize(gridSizeWidth, gridSizeHeight);
 
+        // Spawn items for testing
         spawnItemsForTesting spawner = GetComponent<spawnItemsForTesting>();
         if (spawner != null) {
             spawner.spawn();
@@ -63,6 +66,7 @@ public class Inventory : MonoBehaviour
         RectTransform instantRectTransform = inventoryItem.GetComponent<RectTransform>();
         instantRectTransform.localScale = instantRectTransform.localScale * canvas.scaleFactor;
 
+        // If it is stackable, set its item count
         if (inventoryItem.isStackable) inventoryItem.setItemCount(itemCount);
 
         if (!BoundaryCheck(posx, posy, inventoryItem.sizeWidth, inventoryItem.sizeHeight))
